@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function LoginPage() {
+export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,12 +31,13 @@ export function LoginPage() {
 
 
   return (
+    
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Entre em sua Conta</CardTitle>
         <CardDescription>Informe seu email abaixo</CardDescription>
         <CardAction>
-          <Button variant="link">Sign up</Button>
+          <Button variant="link">Cadastra-se</Button>
         </CardAction>
       </CardHeader>
 

@@ -1,6 +1,6 @@
 import { CardCarInfo } from "../components/card_car_info"
 
-export function HomePage(){
+export default function HomePage(){
 
     return (
         <main>
