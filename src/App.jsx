@@ -1,19 +1,16 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
+import { CardCarInfo } from './components/card_car_info'
+import { Home } from './layouts/home'
+import { NavBar } from './components/nav_bar'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-      <h1>Auto Rent</h1>
-      <div className="bg-red-500 text-white p-10">
-        Tailwind funcionando
-      </div>
-
+      <NavBar></NavBar>
+      <Home></Home>
     </>
   )
 }
