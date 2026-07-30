@@ -9,6 +9,10 @@ function App() {
 
   return (
     <>
+      <h1>Auto Rent</h1>
+      <div className="bg-red-500 text-white p-10">
+        Tailwind funcionando
+      </div>
 
     </>
   )
