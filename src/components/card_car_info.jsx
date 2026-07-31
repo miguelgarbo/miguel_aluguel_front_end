@@ -13,7 +13,7 @@ export function CardCarInfo() {
   return (
     <Card className="w-full max-w-lg">
       <CardHeader>
-        <CardTitle>Dolphin</CardTitle>
+        <CardTitle>BYD - Dolphin</CardTitle>
         <CardDescription>
             A partir de R$ 450,00 / semana
         </CardDescription>
