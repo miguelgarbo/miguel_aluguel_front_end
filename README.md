@@ -1,6 +1,6 @@
-# 🚗 AutoRent Front-End
+# 🚗 Miguel Alugueis Front-End
 
-Interface web do sistema **AutoRent**, desenvolvida com **React** e **Vite** para gerenciamento de aluguel de veículos.
+Interface web do sistema **Miguel Alugueis**, desenvolvida com **React** e **Vite** para gerenciamento de aluguel de veículos.
 
 ## 📋 Pré-requisitos
 
