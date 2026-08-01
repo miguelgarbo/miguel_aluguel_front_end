@@ -7,19 +7,38 @@ export default function NavBar() {
   const location = useLocation();
 
   function handleLogout() {
-    navigate("/login");
+    localStorage.removeItem("user");
+    navigate("/welcome");
   }
+
+  function backToWelcome(){
+
+    navigate("/welcome");
+  }
+
+  function isLoggedIn() {
+
+          console.log("User in localStorage:", localStorage.getItem("user")); // Log the user data
+
+          console.log(!!localStorage.getItem("user")); 
+
+          return !!localStorage.getItem("user");
+  }
+
 
   return (
     <div className="flex items-center justify-between px-6 py-3 border-b">
       {/* Logo */}
-      <div className="flex items-center gap-2">
-        <Car className="w-6 h-6 text-primary" />
-        <span className="font-bold text-lg">Auto Rent</span>
+      <div className="flex items-center gap-2 cursor-pointer"   
+          onClick={backToWelcome}>
+        <Car className="w-6 h-6 text-primary"/>
+        <span className="font-bold text-lg">Miguel Aluguel</span>
       </div>
 
       {/* Abas */}
+
       <div className="flex items-center gap-2">
+      {isLoggedIn() && (
         <Link
           to="/home"
           className={`flex items-center gap-2 rounded-lg p-2 text-sm transition-all hover:bg-accent ${
@@ -28,6 +47,7 @@ export default function NavBar() {
         >
           Carros Disponíveis
         </Link>
+        )}
 
         {/* <Link
           to="/alugueis"
@@ -39,7 +59,8 @@ export default function NavBar() {
         </Link> */}
       </div>
 
-      {/* Avatar (vai pro perfil) + botão de logout */}
+
+      {isLoggedIn() && (
       <div className="flex items-center gap-4">
         <Link to="/perfil">
           <Avatar>
@@ -57,7 +78,10 @@ export default function NavBar() {
         >
           <LogOut className="w-5 h-5" />
         </button>
-      </div>
+      </div>)
+
+      }
+
     </div>
   );
 }

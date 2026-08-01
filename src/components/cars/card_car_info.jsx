@@ -11,7 +11,7 @@ import {
 
 export function CardCarInfo() {
   return (
-    <Card className="w-full max-w-lg">
+    <Card className="card-car shrink-0">
       <CardHeader>
         <CardTitle>BYD - Dolphin</CardTitle>
         <CardDescription>

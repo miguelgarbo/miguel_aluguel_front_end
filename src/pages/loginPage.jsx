@@ -25,6 +25,9 @@ export default function LoginPage() {
     if (email === "miguel@email.com" && password === "senha123") {
       setError(""); 
       navigate("/home");
+
+      localStorage.setItem("user", JSON.stringify({ email }));
+      
     } else {
       setError("Usuário ou senha inválidos");
     }
