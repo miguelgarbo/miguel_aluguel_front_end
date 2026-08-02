@@ -1,3 +1,4 @@
+import { useCars } from"../../hooks/useCars";
 import { CardCarInfo } from "./card_car_info";
 import {
   Carousel,
@@ -7,30 +8,32 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-export default function CauroselCars() {
+export default function CauroselCars({ search, category, transmission }) {
+  const { cars, loading } = useCars();
 
-    return(
-        <div className="section-cars">
-                <Carousel className="w-full max-w-5xl border rounded-lg caurosel-cars">
-                <CarouselContent>
-                    <CarouselItem className="basis-auto">
-                    <CardCarInfo />
-                    </CarouselItem>
-                    <CarouselItem className="basis-auto">
-                    <CardCarInfo />
-                    </CarouselItem>
-                    <CarouselItem className="basis-auto">
-                    <CardCarInfo />
-                    </CarouselItem>
-                    <CarouselItem className="basis-auto">
-                    <CardCarInfo />
-                    </CarouselItem>
-                </CarouselContent>
+  const filteredCars = cars.filter((car) => {
+    const filterSearch = car.name.toLowerCase().includes(search.toLowerCase());
+    const filterCategory = category === "todos" || car.category === category;
+    const filterTransmission = transmission === "todos" || car.transmission === transmission;
+    return filterSearch && filterCategory && filterTransmission;
+  });
+    
+  if (loading) return (
+    <div className="section-cars flex justify-center py-4 px-2">
+    <p>Carregando carros...</p>
+    </div>)
 
-                <CarouselPrevious />
-                <CarouselNext />
-                </Carousel>
-            </div>
-
-            )
+  return (
+    <Carousel className="w-full max-w-5xl mx-auto">
+      <CarouselContent>
+        {filteredCars.map((car) => (
+          <CarouselItem key={car.id} className="basis-auto">
+            <CardCarInfo car={car} />
+          </CarouselItem>
+        ))}
+      </CarouselContent>
+      <CarouselPrevious />
+      <CarouselNext />
+    </Carousel>
+  );
 }
