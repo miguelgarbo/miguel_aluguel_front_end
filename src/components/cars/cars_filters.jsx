@@ -11,15 +11,14 @@ import {
 export default function CarFilters({
   search,
   setSearch,
-  category,
-  setCategory,
-  transmission,
-  setTransmission,
+  brand,
+  setBrand,
+  available,
+  setAvailable,
 }) {
   return (
     <div className="w-full max-w-4xl mx-auto flex flex-col sm:flex-row gap-3 px-6 py-4">
-
-        {/* filtro por nome busca por input usuario */}
+      {/* Busca por modelo ou marca */}
       <div className="relative flex-1">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <Input
@@ -29,29 +28,31 @@ export default function CarFilters({
           className="pl-9"
         />
       </div>
-    {/* dropdown de categoria  */}
-      <Select value={category} onValueChange={setCategory}>
-        <SelectTrigger className="w-full sm:w-[160px]">
-          <SelectValue placeholder="Categoria" />
+
+      {/* Marca */}
+      <Select value={brand} onValueChange={setBrand}>
+        <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectValue placeholder="Marca" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="todos">Todas categorias</SelectItem>
-          <SelectItem value="hatch">Hatch</SelectItem>
-          <SelectItem value="sedan">Sedã</SelectItem>
-          <SelectItem value="suv">SUV</SelectItem>
-          <SelectItem value="pickup">Picape</SelectItem>
+          <SelectItem value="todas">Todas</SelectItem>
+          <SelectItem value="TOYOTA">Toyota</SelectItem>
+          <SelectItem value="HONDA">Honda</SelectItem>
+          <SelectItem value="CHEVROLET">Chevrolet</SelectItem>
+          <SelectItem value="VOLKSWAGEN">Volkswagen</SelectItem>
+          <SelectItem value="HYUNDAI">Hyundai</SelectItem>
         </SelectContent>
       </Select>
 
-{/* dropdown de câmbio */}
-      <Select value={transmission} onValueChange={setTransmission}>
-        <SelectTrigger className="w-full sm:w-[160px]">
-          <SelectValue placeholder="Câmbio" />
+      {/* Disponibilidade */}
+      <Select value={available} onValueChange={setAvailable}>
+        <SelectTrigger className="w-full sm:w-[180px]">
+          <SelectValue placeholder="Disponibilidade" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="todos">Todos os câmbios</SelectItem>
-          <SelectItem value="manual">Manual</SelectItem>
-          <SelectItem value="automático">Automático</SelectItem>
+          <SelectItem value="todos">Todos</SelectItem>
+          <SelectItem value={true}>Disponível</SelectItem>
+          <SelectItem value={false}>Indisponível</SelectItem>
         </SelectContent>
       </Select>
     </div>

@@ -12,13 +12,25 @@ import {
 
 export function CardCarInfo({ car }) {
 
+
+  function availableCar(available) {
+
+    if (available === true) {
+      return "Disponível"
+
+    }else{
+      return "Indisponível"
+    }
+  } 
+
+  console.log("car", car)
   
   return (
     <Card className="card-car shrink-0">
       <CardHeader>
-        <CardTitle>{car.name} - {car.brand}</CardTitle>
+        <CardTitle>{car.modelo} - {car.marca}</CardTitle>
         <CardDescription>
-            A partir de R$ {car.weeklyPrice} / semana
+            A partir de R$ {car.valorDiaria} / semana
         </CardDescription>
        
       </CardHeader>
@@ -29,11 +41,11 @@ export function CardCarInfo({ car }) {
             </div>
 
             <div className='car-text-info'>
-               <p><strong>Aluguel semanal:</strong> R$ {car.weeklyPrice},00</p>
-               <p><strong>Categoria:</strong> {car.category}</p>
-               <p><strong>Câmbio:</strong> {car.transmission}</p>
-               <p><strong>Motorização:</strong> {car.fuelType}</p>
-            <p><strong>Disponibilidade:</strong> Imediata</p>
+               <p><strong>Aluguel semanal:</strong> R$ {car.valorDiaria},00</p>
+               {/* <p><strong>Categoria:</strong> {car.category}</p> */}
+                <p><strong>Placa:</strong> {car.placa}</p>
+               {/* <p><strong>Motorização:</strong> {car.fuelType}</p> */} 
+            <p><strong>Disponibilidade:</strong> {availableCar(car.disponivel)}</p>
             </div>
         </div>
       </CardContent>

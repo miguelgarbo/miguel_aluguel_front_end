@@ -8,15 +8,20 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-export default function CauroselCars({ search, category, transmission }) {
+export default function CauroselCars({ search, brand , available}) {
   const { cars, loading } = useCars();
 
+  console.log("cars aqui no carrosel", cars)
+
   const filteredCars = cars.filter((car) => {
-    const filterSearch = car.name.toLowerCase().includes(search.toLowerCase());
-    const filterCategory = category === "todos" || car.category === category;
-    const filterTransmission = transmission === "todos" || car.transmission === transmission;
-    return filterSearch && filterCategory && filterTransmission;
+    const filterSearch = car.modelo.toLowerCase().includes(search.toLowerCase());
+    const filterBrand = brand === "todos" || car.marca === brand;
+    const filterAvailable = available === "todos" || car.disponivel === available;
+
+    return filterSearch && filterBrand && filterAvailable;
   });
+
+  console.log("filteredCars", filteredCars)
     
   if (loading) return (
     <div className="section-cars flex justify-center py-4 px-2">

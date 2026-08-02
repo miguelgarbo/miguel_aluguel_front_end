@@ -4,21 +4,21 @@ import CarFilters from "../components/cars/cars_filters";
 
 export default function HomePage() {
   const [search, setSearch] = useState("");
-  const [category, setCategory] = useState("todos");
-  const [transmission, setTransmission] = useState("todos");
+  const [brand, setBrand] = useState("todos");
+  const [available, setAvailable] = useState("todos");
 
   return (
     <main>
       <CarFilters
         search={search}
         setSearch={setSearch}
-        category={category}
-        setCategory={setCategory}
-        transmission={transmission}
-        setTransmission={setTransmission}
+        brand={brand}
+        setBrand={setBrand}
+        available={available}
+        setAvailable={setAvailable}
       />
 
-      <CauroselCars search={search} category={category} transmission={transmission} />
+      <CauroselCars search={search} brand={brand} available={available} />
     </main>
   );
 }
