@@ -29,7 +29,7 @@ export default function LoginPage() {
       if (user) {
         setError("");
         navigate("/home");
-        localStorage.setItem("user", JSON.stringify({ email }));
+        localStorage.setItem("user", user.id);
 
         console.log("Login bem-sucedido:", user);
       } else {
@@ -37,6 +37,7 @@ export default function LoginPage() {
       }
     }); 
   }
+  
 
   return (
     <div className="section-cars">

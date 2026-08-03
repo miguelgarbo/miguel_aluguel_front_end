@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,30 +17,63 @@ import {
 } from "@/components/ui/tabs";
 import { AlertError } from "../components/alerts";
 
+import { getUserById, updateUser } from "../services/userService";
+
+
 export default function ProfilePage() {
-  // Dados do perfil (viriam da API futuramente)
-  const [name, setName] = useState("Miguel Garbo");
-  const [email, setEmail] = useState("miguel@email.com");
+
+  const userId = localStorage.getItem("user");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [rentals, setRentals] = useState([]);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const [rentals] = useState([
-    { id: 1, car: "Dolphin", startDate: "01/07/2026", endDate: "08/07/2026", status: "Concluído" },
-    { id: 2, car: "Onix", startDate: "20/07/2026", endDate: "27/07/2026", status: "Em andamento" },
-  ]);
+  useEffect(() => {
+    async function getUserLogged() {
+      try {
+        if (!userId) return;
 
-  function handleUpdateProfile(e) {
-    e.preventDefault();
+        const user = await getUserById(userId);
 
-    if (!name || !email) {
-      setError("Preencha todos os campos");
-      setSuccess("");
-      return;
+        setName(user.nomeCompleto);
+        setEmail(user.email);
+        setRentals(user.alugueis || []);
+      } catch (err) {
+        console.error(err);
+        setError("Erro ao carregar os dados do usuário.");
+      }
     }
 
-    setError("");
-    setSuccess("Dados atualizados com sucesso!");
-  }
+    getUserLogged();
+  }, [userId]);
+
+  async function handleUpdateProfile(e) {
+      e.preventDefault();
+      setError("");
+      setSuccess("");
+
+      try {
+        const user = await getUserById(userId);
+
+        await updateUser(userId, {
+          ...user,
+          nomeCompleto: name,
+          email: email,
+        });
+
+        setSuccess("Dados atualizados com sucesso!");
+      } catch (err) {
+        setError("Erro ao atualizar.");
+      }
+    }
+
+    function getRentalStatus(fimAluguel) {
+        return new Date(fimAluguel) < new Date()
+          ? "Encerrado"
+          : "Em andamento";
+    }  
+
 
   return (
     <div className="section-cars flex justify-center py-10 px-4">
@@ -57,7 +90,7 @@ export default function ProfilePage() {
               <TabsTrigger value="alugueis">Meus Aluguéis</TabsTrigger>
             </TabsList>
 
-            {/* Aba: Editar Perfil */}
+            {/* Aba Editar Perfil */}
             <TabsContent value="editar">
               <form
                 id="profile-form"
@@ -107,30 +140,42 @@ export default function ProfilePage() {
                   <p className="text-sm text-muted-foreground">
                     Você ainda não fez nenhum aluguel.
                   </p>
-                ) : (
-                  rentals.map((rental) => (
-                    <div
-                      key={rental.id}
-                      className="flex items-center justify-between border rounded-lg p-3"
-                    >
-                      <div>
-                        <p className="font-medium">{rental.car}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {rental.startDate} até {rental.endDate}
-                        </p>
-                      </div>
-                      <span
-                        className={`text-xs px-2 py-1 rounded-full ${
-                          rental.status === "Em andamento"
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-green-100 text-green-700"
-                        }`}
-                      >
-                        {rental.status}
-                      </span>
-                    </div>
-                  ))
-                )}
+                ) : rentals.map((rental) => {
+
+      const status = getRentalStatus(rental.fimAluguel);
+      return (
+        <div
+          key={rental.id}
+          className="flex items-center justify-between border rounded-lg p-3"
+        >
+          <div>
+            <p className="font-medium">
+              {rental.carro.marca} {rental.carro.modelo}
+            </p>
+
+            <p className="text-sm text-muted-foreground">
+              {new Date(rental.inicioAluguel).toLocaleDateString("pt-BR")}
+              {" até "}
+              {new Date(rental.fimAluguel).toLocaleDateString("pt-BR")}
+            </p>
+
+            <p className="text-sm font-medium">
+              R$ {Number(rental.valorTotal).toFixed(2)}
+            </p>
+          </div>
+
+          <span
+            className={`text-xs px-2 py-1 rounded-full ${
+              status === "Em andamento"
+                ? "bg-blue-100 text-blue-700"
+                : "bg-green-100 text-green-700"
+            }`}
+          >
+            {status}
+          </span>
+        </div>
+      );
+    })}
               </div>
             </TabsContent>
           </Tabs>

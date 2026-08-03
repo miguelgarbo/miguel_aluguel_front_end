@@ -2,9 +2,10 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import LoginPage from "../pages/loginPage";
 import HomePage from "../pages/homePage";
-import RegisterPage from "../pages/registerPage";
+import RegisterPage from "../pages/registerUserPage";
 import ProfilePage from "../pages/profilePage";
 import InitialPage from "../pages/initialPage";
+import RegisterCarPage from "../pages/registerCarPage";
 
 export default function AppRoutes() {
   return (
@@ -18,6 +19,8 @@ export default function AppRoutes() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/cadastro_usuario" element={<RegisterPage />} />
             <Route path="/perfil" element={<ProfilePage />} />
+            <Route path="/cadastro_carro" element={<RegisterCarPage />} />
+
 
 
         </Route>
