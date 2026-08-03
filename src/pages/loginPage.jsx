@@ -13,6 +13,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertError } from "../components/alerts"; 
+
+import { login } from "../services/userService";
+
 export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -22,15 +25,17 @@ export default function LoginPage() {
   function handleLogin(e) {
     e.preventDefault();
 
-    if (email === "miguel@email.com" && password === "senha123") {
-      setError(""); 
-      navigate("/home");
+    login(email, password ).then((user) => {
+      if (user) {
+        setError("");
+        navigate("/home");
+        localStorage.setItem("user", JSON.stringify({ email }));
 
-      localStorage.setItem("user", JSON.stringify({ email }));
-      
-    } else {
-      setError("Usuário ou senha inválidos");
-    }
+        console.log("Login bem-sucedido:", user);
+      } else {
+        setError("Usuário ou senha inválidos");
+      }
+    }); 
   }
 
   return (

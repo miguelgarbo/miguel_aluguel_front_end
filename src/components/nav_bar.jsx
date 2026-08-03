@@ -18,10 +18,6 @@ export default function NavBar() {
 
   function isLoggedIn() {
 
-          console.log("User in localStorage:", localStorage.getItem("user")); // Log the user data
-
-          console.log(!!localStorage.getItem("user")); 
-
           return !!localStorage.getItem("user");
   }
 
