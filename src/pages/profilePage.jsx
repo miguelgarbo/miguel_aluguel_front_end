@@ -19,6 +19,7 @@ import {
 import { getUserById, updateUser } from "../services/userService";
 
 import { getRentalsByUser } from "../services/rentalService";
+import { updateCar } from "../services/carsService";
 
 export default function ProfilePage() {
 
@@ -55,30 +56,65 @@ export default function ProfilePage() {
   }, [userId]);
 
   async function handleUpdateProfile(e) {
-      e.preventDefault();
-      setError("");
-      setSuccess("");
+    e.preventDefault();
+    setError("");
+    setSuccess("");
 
-      try {
-        const user = await getUserById(userId);
+    try {
+      const user = await getUserById(userId);
 
-        await updateUser(userId, {
-          ...user,
-          nomeCompleto: name,
-          email: email,
+      await updateUser(userId, {
+        ...user,
+        nomeCompleto: name,
+        email: email,
+      });
+
+      setSuccess("Dados atualizados com sucesso!");
+    } catch (err) {
+      setError("Erro ao atualizar.");
+    }
+  }
+
+  function getRentalStatus(fimAluguel) {
+    return new Date(fimAluguel) < new Date()
+      ? "Encerrado"
+      : "Em andamento";
+  }
+
+
+
+  async function setCarAvailableAgain(carro_aluguel, fimAluguel) {
+
+    if (new Date(fimAluguel) < new Date()) {
+
+      await updateCar(carro_aluguel.id, {
+        ...carro_aluguel,
+        disponivel: true,
+      })
+        .then((updatedCar) => {
+          console.log("Carro atualizado:", updatedCar);
+        })
+        .catch((error) => {
+          console.error("Erro ao atualizar o carro:", error);
         });
 
-        setSuccess("Dados atualizados com sucesso!");
-      } catch (err) {
-        setError("Erro ao atualizar.");
+    }
+
+    return
+  }
+
+  useEffect(() => {
+
+    async function updateCarAvailability() {
+      for (const rental of rentals) {
+        await setCarAvailableAgain(rental.carro, rental.fimAluguel);
       }
     }
 
-    function getRentalStatus(fimAluguel) {
-        return new Date(fimAluguel) < new Date()
-          ? "Encerrado"
-          : "Em andamento";
-    }  
+    updateCarAvailability();
+  }, [rentals]);
+
+
 
 
   return (
@@ -148,40 +184,39 @@ export default function ProfilePage() {
                   </p>
                 ) : rentals.map((rental) => {
 
-      const status = getRentalStatus(rental.fimAluguel);
-      return (
-        <div
-          key={rental.id}
-          className="flex items-center justify-between border rounded-lg p-3"
-        >
-          <div>
-            <p className="font-medium">
-              {rental.carro.marca} {rental.carro.modelo}
-            </p>
+                  const status = getRentalStatus(rental.fimAluguel);
+                  return (
+                    <div
+                      key={rental.id}
+                      className="flex items-center justify-between border rounded-lg p-3"
+                    >
+                      <div>
+                        <p className="font-medium">
+                          {rental.carro.marca} {rental.carro.modelo}
+                        </p>
 
-            <p className="text-sm text-muted-foreground">
-              {new Date(rental.inicioAluguel).toLocaleDateString()}
-              {" até "}
-              {new Date(rental.fimAluguel).toLocaleDateString()}
-            </p>
+                        <p className="text-sm text-muted-foreground">
+                          {new Date(rental.inicioAluguel).toLocaleDateString()}
+                          {" até "}
+                          {new Date(rental.fimAluguel).toLocaleDateString()}
+                        </p>
 
-            <p className="text-sm font-medium">
-              R$ {rental.valorTotal.toFixed(2)}
-            </p>
-          </div>
+                        <p className="text-sm font-medium">
+                          R$ {rental.valorTotal.toFixed(2)}
+                        </p>
+                      </div>
 
-          <span
-            className={`text-xs px-2 py-1 rounded-full ${
-              status === "Em andamento"
-                ? "bg-blue-100 text-blue-700"
-                : "bg-green-100 text-green-700"
-            }`}
-          >
-            {status}
-          </span>
-        </div>
-      );
-    })}
+                      <span
+                        className={`text-xs px-2 py-1 rounded-full ${status === "Em andamento"
+                          ? "bg-blue-100 text-blue-700"
+                          : "bg-green-100 text-green-700"
+                          }`}
+                      >
+                        {status}
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </TabsContent>
           </Tabs>

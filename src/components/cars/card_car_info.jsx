@@ -16,7 +16,6 @@ export function CardCarInfo({ car }) {
 
   const [open, setOpen] = useState(false);
 
-
   function availableCar(available) {
 
     if (available === true) {
@@ -27,7 +26,6 @@ export function CardCarInfo({ car }) {
     }
   } 
 
-  console.log("car", car)
   
   return (
     <Card className="card-car shrink-0">

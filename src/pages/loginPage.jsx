@@ -20,7 +20,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // novo estado pro erro
+  const [error, setError] = useState(""); 
 
   function handleLogin(e) {
     e.preventDefault();
