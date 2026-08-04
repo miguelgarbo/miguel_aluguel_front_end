@@ -43,18 +43,7 @@ export default function CarFilters({
           <SelectItem value="HYUNDAI">Hyundai</SelectItem>
         </SelectContent>
       </Select>
-
-      {/* Disponibilidade */}
-      <Select value={available} onValueChange={setAvailable}>
-        <SelectTrigger className="w-full sm:w-[180px]">
-          <SelectValue placeholder="Disponibilidade" />
-        </SelectTrigger>
-        <SelectContent>
-          <SelectItem value="todos">Todos</SelectItem>
-          <SelectItem value={true}>Disponível</SelectItem>
-          <SelectItem value={false}>Indisponível</SelectItem>
-        </SelectContent>
-      </Select>
+    
     </div>
   );
 }
