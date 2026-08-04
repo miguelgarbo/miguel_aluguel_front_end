@@ -15,10 +15,10 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs";
-import { AlertError } from "../components/alerts";
 
 import { getUserById, updateUser } from "../services/userService";
 
+import { getRentalsByUser } from "../services/rentalService";
 
 export default function ProfilePage() {
 
@@ -26,8 +26,11 @@ export default function ProfilePage() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [rentals, setRentals] = useState([]);
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+
 
   useEffect(() => {
     async function getUserLogged() {
@@ -35,10 +38,13 @@ export default function ProfilePage() {
         if (!userId) return;
 
         const user = await getUserById(userId);
+        const rentals = await getRentalsByUser(userId);
 
         setName(user.nomeCompleto);
         setEmail(user.email);
-        setRentals(user.alugueis || []);
+        setRentals(rentals);
+
+        console.log("rentals of user", user.alugueis);
       } catch (err) {
         console.error(err);
         setError("Erro ao carregar os dados do usuário.");
@@ -154,13 +160,13 @@ export default function ProfilePage() {
             </p>
 
             <p className="text-sm text-muted-foreground">
-              {new Date(rental.inicioAluguel).toLocaleDateString("pt-BR")}
+              {new Date(rental.inicioAluguel).toLocaleDateString()}
               {" até "}
-              {new Date(rental.fimAluguel).toLocaleDateString("pt-BR")}
+              {new Date(rental.fimAluguel).toLocaleDateString()}
             </p>
 
             <p className="text-sm font-medium">
-              R$ {Number(rental.valorTotal).toFixed(2)}
+              R$ {rental.valorTotal.toFixed(2)}
             </p>
           </div>
 

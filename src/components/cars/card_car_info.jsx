@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button"
+
 import {
   Card,
   CardAction,
@@ -8,9 +10,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-
+import RentModal from "./rentModal";
 
 export function CardCarInfo({ car }) {
+
+  const [open, setOpen] = useState(false);
 
 
   function availableCar(available) {
@@ -50,12 +54,21 @@ export function CardCarInfo({ car }) {
         </div>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="w-full">
+
+        <Button
+        className="w-full"
+        onClick={() => setOpen(true)}>
           Alugar
         </Button>
-        <Button variant="outline" className="w-full">
+
+        <RentModal
+        open={open}
+        onOpenChange={setOpen}
+        car={car}
+      />
+        {/* <Button variant="outline" className="w-full">
             + Salvar
-        </Button>
+        </Button> */}
       </CardFooter>
     </Card>
   )

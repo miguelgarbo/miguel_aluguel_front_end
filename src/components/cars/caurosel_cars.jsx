@@ -8,18 +8,23 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-export default function CauroselCars({ search, brand , available}) {
+export default function CauroselCars({ search, brand }) {
   const { cars, loading } = useCars();
 
   console.log("cars aqui no carrosel", cars)
 
   const filteredCars = cars.filter((car) => {
-    const filterSearch = car.modelo.toLowerCase().includes(search.toLowerCase());
+    const filterSearch = car.modelo
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
     const filterBrand = brand === "todos" || car.marca === brand;
-    const filterAvailable = available === "todos" || car.disponivel === available;
+
+    const filterAvailable = car.disponivel === true;
 
     return filterSearch && filterBrand && filterAvailable;
   });
+
 
   console.log("filteredCars", filteredCars)
     

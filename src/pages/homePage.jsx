@@ -14,11 +14,10 @@ export default function HomePage() {
         setSearch={setSearch}
         brand={brand}
         setBrand={setBrand}
-        available={available}
-        setAvailable={setAvailable}
+        
       />
 
-      <CauroselCars search={search} brand={brand} available={available} />
+      <CauroselCars search={search} brand={brand} />
     </main>
   );
 }
