@@ -14,28 +14,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertError } from "../components/alerts"; 
 
-import { login } from "../services/userService";
+import { login } from "../services/authService";
 
 export default function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [senha, setSenha] = useState("");
   const [error, setError] = useState(""); 
 
-  function handleLogin(e) {
-    e.preventDefault();
+    async function handleLogin(e) {
+      e.preventDefault();
 
-    login(email, password ).then((user) => {
-      if (user) {
+      try {
+        const token = await login(email, senha);
+
+        console.log("Token:", token);
         setError("");
         navigate("/home");
-        localStorage.setItem("user", user.id);
-
-        console.log("Login bem-sucedido:", user);
-      } else {
+      } catch (error) {
         setError("Usuário ou senha inválidos");
       }
-    }); 
   }
   
 
@@ -82,8 +80,8 @@ export default function LoginPage() {
                 <Input
                   id="password"
                   type="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={senha}
+                  onChange={(e) => setSenha(e.target.value)}
                   required
                 />
               </div>

@@ -25,7 +25,6 @@ export default function CauroselCars({ search, brand }) {
     return filterSearch && filterBrand && filterAvailable;
   });
 
-
   console.log("filteredCars", filteredCars)
     
   if (loading) return (

@@ -13,15 +13,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertError, AlertSuccess } from "../components/alerts";
+
 import { createUser } from "../services/userService";
+import { registrar } from "../services/authService";
+
 
 export default function RegisterPage() {
   const navigate = useNavigate();
 
-  const [name, setName] = useState("");
+  const [nomeCompleto, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [senha, setSenha] = useState("");
+  const [confirmarSenha, setconfirmarSenha] = useState("");
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
@@ -32,23 +35,23 @@ export default function RegisterPage() {
     setError("");
     setSuccess("");
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (!nomeCompleto || !email || !senha || !confirmarSenha) {
       setError("Preencha todos os campos");
       return;
     }
 
-    if (password !== confirmPassword) {
+    if (senha !== confirmarSenha) {
       setError("As senhas não coincidem");
       return;
     }
 
     try {
-      await createUser({
-        nomeCompleto: name,
+
+      console.log("cadastrou vei")
+      await registrar({
+        nomeCompleto,
         email,
-        senhaHash: password,
-        isAdmin: false,
-        dataCadastro: new Date().toISOString().slice(0, 19),
+        senha
       });
 
       setSuccess("Cadastro realizado com sucesso!");
@@ -58,9 +61,13 @@ export default function RegisterPage() {
       }, 1500);
     } catch (err) {
       console.error(err);
-      setError("Não foi possível realizar o cadastro.");
+
+      setError(
+        err.response?.data || "Não foi possível realizar o cadastro."
+      );
     }
   }
+   
 
   return (
     <div className="section-cars">
@@ -101,10 +108,10 @@ export default function RegisterPage() {
             <div className="grid gap-2">
               <Label htmlFor="name">Nome</Label>
               <Input
-                id="name"
+                id="nomeCompleto"
                 type="text"
                 placeholder="Seu nome completo"
-                value={name}
+                value={nomeCompleto}
                 onChange={(e) => setName(e.target.value)}
                 required
               />
@@ -123,12 +130,12 @@ export default function RegisterPage() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="password">Senha</Label>
+              <Label htmlFor="senha">Senha</Label>
               <Input
-                id="password"
+                id="senha"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
                 required
               />
             </div>
@@ -140,8 +147,8 @@ export default function RegisterPage() {
               <Input
                 id="confirm-password"
                 type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={confirmarSenha}
+                onChange={(e) => setconfirmarSenha(e.target.value)}
                 required
               />
             </div>
