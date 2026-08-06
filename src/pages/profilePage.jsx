@@ -20,10 +20,16 @@ import { getUserById, updateUser } from "../services/userService";
 
 import { getRentalsByUser } from "../services/rentalService";
 import { updateCar } from "../services/carsService";
+import { getUserAuthenticated } from "@/services/authService";
+import { AlertError } from "@/components/alerts";
+
+
 
 export default function ProfilePage() {
 
-  const userId = localStorage.getItem("user");
+  const userLogged = getUserAuthenticated()
+
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [rentals, setRentals] = useState([]);
@@ -33,27 +39,28 @@ export default function ProfilePage() {
 
 
 
-  useEffect(() => {
-    async function getUserLogged() {
+    useEffect(() => {
+    async function loadProfile() {
       try {
-        if (!userId) return;
+        const userLogged = await getUserAuthenticated();
 
-        const user = await getUserById(userId);
-        const rentals = await getRentalsByUser(userId);
+        if (!userLogged) return;
+
+        const user = await getUserById(userLogged.id);
+        const rentals = await getRentalsByUser(userLogged.id);
 
         setName(user.nomeCompleto);
         setEmail(user.email);
         setRentals(rentals);
-
-        console.log("rentals of user", user.alugueis);
       } catch (err) {
         console.error(err);
         setError("Erro ao carregar os dados do usuário.");
       }
     }
 
-    getUserLogged();
-  }, [userId]);
+    loadProfile();
+  }, []);
+
 
   async function handleUpdateProfile(e) {
     e.preventDefault();
@@ -61,9 +68,9 @@ export default function ProfilePage() {
     setSuccess("");
 
     try {
-      const user = await getUserById(userId);
+      
 
-      await updateUser(userId, {
+      await updateUser(userLogged.id, {
         ...user,
         nomeCompleto: name,
         email: email,

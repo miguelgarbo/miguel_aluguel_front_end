@@ -22,6 +22,19 @@ export async function registrar({nomeCompleto, email, senha}) {
 }
 
 
+export function getUserAuthenticated() {
+  const token = localStorage.getItem(TOKEN_KEY);
+
+  if (!token) return null;
+
+  try {
+    const payload = token.split(".")[1];
+    return JSON.parse(atob(payload));
+  } catch (e) {
+    return null;
+  }
+}
+
 export function logout() {
   localStorage.removeItem(TOKEN_KEY);
 }

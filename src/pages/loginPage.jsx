@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertError } from "../components/alerts"; 
 
-import { login } from "../services/authService";
+import { getUserAuthenticated, login } from "../services/authService";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -30,7 +30,14 @@ export default function LoginPage() {
 
         console.log("Token:", token);
         setError("");
+        const userAuthtenticated = getUserAuthenticated
+        if (userAuthtenticated.role =='ADMIN'){
+                  navigate("/cadastro_carro");
+
+        }else{
         navigate("/home");
+
+        }
       } catch (error) {
         setError("Usuário ou senha inválidos");
       }

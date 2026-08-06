@@ -12,12 +12,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createRental } from "../../services/rentalService";
 import { AlertSuccess, AlertError } from "../alerts";
+import { getUserAuthenticated } from "@/services/authService";
 
 export default function RentModal({
   open,
   onOpenChange,
   car,
 }) {
+
+  const userAuthenticated = getUserAuthenticated()
   const [inicio, setInicio] = useState("");
   const [fim, setFim] = useState("");
 
@@ -56,7 +59,7 @@ export default function RentModal({
           id: car.id,
         },
         usuario: {
-          id: Number(localStorage.getItem("user")),
+          id: userAuthenticated.id
         },
         valorTotal,
         inicioAluguel: inicio,

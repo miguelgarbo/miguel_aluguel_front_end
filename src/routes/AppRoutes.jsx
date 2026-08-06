@@ -6,24 +6,47 @@ import RegisterPage from "../pages/registerUserPage";
 import ProfilePage from "../pages/profilePage";
 import InitialPage from "../pages/initialPage";
 import RegisterCarPage from "../pages/registerCarPage";
+import NaoAutorizado from "../pages/noAuthorized";
+import { RotaProtegida } from "./secureRoutes";
 
 export default function AppRoutes() {
   return (
     <Routes>
-       <Route path="/" element={<Navigate to="/welcome" replace />} />
-       <Route path="/welcome" element={<InitialPage />} />
+      <Route path="/" element={<Navigate to="/welcome" replace />} />
+      <Route path="/welcome" element={<InitialPage />} />
 
-        <Route element={<MainLayout/>}>
+      <Route element={<MainLayout />}>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/cadastro_usuario" element={<RegisterPage />} />
+        <Route path="/nao-autorizado" element={<NaoAutorizado />} />
 
-            <Route path="/home" element={<HomePage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/cadastro_usuario" element={<RegisterPage />} />
-            <Route path="/perfil" element={<ProfilePage />} />
-            <Route path="/cadastro_carro" element={<RegisterCarPage />} />
+        <Route
+          path="/home"
+          element={
+            <RotaProtegida>
+              <HomePage />
+            </RotaProtegida>
+          }
+        />
 
+        <Route
+          path="/perfil"
+          element={
+            <RotaProtegida>
+              <ProfilePage />
+            </RotaProtegida>
+          }
+        />
 
-
-        </Route>
+        <Route
+          path="/cadastro_carro"
+          element={
+            <RotaProtegida apenasAdmin>
+              <RegisterCarPage />
+            </RotaProtegida>
+          }
+        />
+      </Route>
     </Routes>
   );
 }

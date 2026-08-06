@@ -2,12 +2,15 @@ import { Car, User, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 
+import { logout } from '../services/authService'
+
 export default function NavBar() {
   const navigate = useNavigate();
   const location = useLocation();
 
   function handleLogout() {
-    localStorage.removeItem("user");
+
+    logout()
     navigate("/welcome");
   }
 
@@ -18,7 +21,7 @@ export default function NavBar() {
 
   function isLoggedIn() {
 
-          return !!localStorage.getItem("user");
+          return !!localStorage.getItem("token");
   }
 
 
