@@ -1,0 +1,70 @@
+services:
+
+  backend:
+    image: miguelgarbo/miguel_aluguel_back_end:v.2
+
+    container_name: miguel_aluguel_backend_official
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/miguel_aluguel
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
+      HASH_TOKEN: ch7ZyBOjWpLhyjmpmJWJlF3fEfNR5bW2aFYwqADEJksenvVr3MJMPWaWMk1UaaTjnJExf8EnCd2NxWyVf8TWbA
+      FRONT_URL: http://ip_vm:5173
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+    restart: unless-stopped
+
+
+  postgres:
+    image: postgres:17-alpine
+
+    container_name: miguel_aluguel_postgres_test
+
+    ports:
+      - "5432:5432"
+
+    environment:
+      POSTGRES_DB: miguel_aluguel
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d miguel_aluguel"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+    restart: unless-stopped
+
+
+  frontend:
+    image: miguelgarbo/miguel_aluguel_front_end:v.5
+
+    restart: unless-stopped
+
+    container_name: miguel_aluguel_frontend
+
+    ports:
+      - "5173:80"
+
+    environment:
+      - VITE_API_URL=http://ip_vm:8080
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
+
+
+volumes:
+  postgres_test_data:
