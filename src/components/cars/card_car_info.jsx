@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
 import {
@@ -15,31 +16,23 @@ import { getUserAuthenticated } from "@/services/authService";
 import { deleteCar } from "@/services/carsService";
 
 export function CardCarInfo({ car }) {
-
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const userLogged = getUserAuthenticated();
 
   const isAdmin = userLogged?.role === "ADMIN";
 
   function availableCar(available) {
-    if (available === true) {
-      return "Disponível";
-    }
-
-    return "Indisponível";
+    return available ? "Disponível" : "Indisponível";
   }
 
   async function handleDelete() {
     try {
       await deleteCar(car.id);
-
       alert("Carro apagado com sucesso!");
-
-      // Recarrega a página para atualizar a lista
       window.location.reload();
     } catch (error) {
       console.error("Erro ao apagar carro:", error);
-
       alert("Não foi possível apagar o carro.");
     }
   }
@@ -50,7 +43,6 @@ export function CardCarInfo({ car }) {
         <CardTitle>
           {car.modelo} - {car.marca}
         </CardTitle>
-
         <CardDescription>
           A partir de R$ {car.valorDiaria} / dia
         </CardDescription>
@@ -70,44 +62,42 @@ export function CardCarInfo({ car }) {
             <p>
               <strong>Aluguel diária:</strong> R$ {car.valorDiaria},00
             </p>
-
             <p>
               <strong>Placa:</strong> {car.placa}
             </p>
-
             <p>
-              <strong>Disponibilidade:</strong>{" "}
-              {availableCar(car.disponivel)}
+              <strong>Disponibilidade:</strong> {availableCar(car.disponivel)}
             </p>
           </div>
         </div>
       </CardContent>
 
       <CardFooter className="flex-col gap-2">
-
-        <Button
-          className="w-full"
-          onClick={() => setOpen(true)}
-        >
+        <Button className="w-full" onClick={() => setOpen(true)}>
           Alugar
         </Button>
 
         {isAdmin && (
-          <Button
-            variant="destructive"
-            className="w-full"
-            onClick={handleDelete}
-          >
-            Apagar
-          </Button>
+          <>
+            <Button
+              variant="destructive"
+              className="w-full"
+              onClick={handleDelete}
+            >
+              Apagar
+            </Button>
+
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={() => navigate(`/cadastro_carro/${car.id}`)}
+            >
+              Editar
+            </Button>
+          </>
         )}
 
-        <RentModal
-          open={open}
-          onOpenChange={setOpen}
-          car={car}
-        />
-
+        <RentModal open={open} onOpenChange={setOpen} car={car} />
       </CardFooter>
     </Card>
   );

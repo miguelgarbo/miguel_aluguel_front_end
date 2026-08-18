@@ -1,15 +1,15 @@
 import { Navigate } from "react-router-dom";
-import { isAuthenticated, getUserAuthenticated } from "../services/authService"; // ajusta o path certo
+import { isAuthenticated, getUserAuthenticated } from "../services/authService"; 
 
-export function RotaProtegida({ children, apenasAdmin = false }) {
+export function ProtectedRoute({ children, justAdmin = false }) {
   if (!isAuthenticated()) {
     return <Navigate to="/login" replace />;
   }
 
-  if (apenasAdmin) {
+  if (justAdmin) {
     const usuario = getUserAuthenticated();
     if (usuario?.role !== "ADMIN") {
-      return <Navigate to="/nao-autorizado" replace />;
+      return <Navigate to="/not_authorized" replace />;
     }
   }
 

@@ -317,8 +317,12 @@ main {
 
 }
 
-.btn-admin-car{
+.not-authorized-card{
 
     display: flex;
-    width: 200px;
+    flex-direction: column;
+    padding: 30px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid red;
 }

@@ -6,8 +6,8 @@ import RegisterPage from "../pages/registerUserPage";
 import ProfilePage from "../pages/profilePage";
 import InitialPage from "../pages/initialPage";
 import RegisterCarPage from "../pages/registerCarPage";
-import NaoAutorizado from "../pages/noAuthorized";
-import { RotaProtegida } from "./secureRoutes";
+import NotAuthorized from "../pages/noAuthorized";
+import { ProtectedRoute } from "./secureRoutes";
 
 export default function AppRoutes() {
   return (
@@ -18,32 +18,43 @@ export default function AppRoutes() {
       <Route element={<MainLayout />}>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/cadastro_usuario" element={<RegisterPage />} />
-        <Route path="/nao-autorizado" element={<NaoAutorizado />} />
+        <Route path="/not_authorized" element={<NotAuthorized />} />
 
         <Route
           path="/home"
           element={
-            <RotaProtegida>
+            <ProtectedRoute>
               <HomePage />
-            </RotaProtegida>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/perfil"
           element={
-            <RotaProtegida>
+            <ProtectedRoute>
               <ProfilePage />
-            </RotaProtegida>
+            </ProtectedRoute>
           }
         />
 
+        {/* Cadastro de novo carro */}
         <Route
           path="/cadastro_carro"
           element={
-            <RotaProtegida apenasAdmin>
+            <ProtectedRoute justAdmin>
               <RegisterCarPage />
-            </RotaProtegida>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Edição de carro existente via ID */}
+        <Route
+          path="/cadastro_carro/:id"
+          element={
+            <ProtectedRoute justAdmin>
+              <RegisterCarPage />
+            </ProtectedRoute>
           }
         />
       </Route>

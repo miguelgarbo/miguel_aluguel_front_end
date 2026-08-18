@@ -1,6 +1,6 @@
-export default function NaoAutorizado() {
+export default function NotAuthorized() {
   return (
-    <div>
+    <div className="not-authorized-card">
       <h1>Acesso negado</h1>
       <p>Você não tem permissão para acessar essa página.</p>
     </div>

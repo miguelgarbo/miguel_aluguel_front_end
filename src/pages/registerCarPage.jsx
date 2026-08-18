@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,10 +19,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AlertError, AlertSuccess } from "../components/alerts";
-import { createCar } from "../services/carsService";
+import { createCar, updateCar, getCarById } from "../services/carsService";
 
 export default function RegisterCarPage() {
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEditing = Boolean(id);
 
   const [placa, setPlaca] = useState("");
   const [marca, setMarca] = useState("");
@@ -33,9 +35,25 @@ export default function RegisterCarPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  async function handleRegisterCar(e) {
-    e.preventDefault();
+  useEffect(() => {
+    if (id) {
+      getCarById(id)
+        .then((car) => {
+          setPlaca(car.placa || "");
+          setMarca(car.marca || "");
+          setModelo(car.modelo || "");
+          setValorDiaria(car.valorDiaria ? String(car.valorDiaria) : "");
+          setImagem(car.imagem || "");
+        })
+        .catch((err) => {
+          console.error("Erro ao carregar dados do carro:", err);
+          setError("Não foi possível carregar os dados do veículo.");
+        });
+    }
+  }, [id]);
 
+  async function handleSubmit(e) {
+    e.preventDefault();
     setError("");
     setSuccess("");
 
@@ -44,24 +62,34 @@ export default function RegisterCarPage() {
       return;
     }
 
-    try {
-      await createCar({
-        placa,
-        marca,
-        modelo,
-        valorDiaria: parseFloat(valorDiaria),
-        imagem,
-        disponivel: true,
-      });
+    const carData = {
+      placa,
+      marca,
+      modelo,
+      valorDiaria: parseFloat(valorDiaria),
+      imagem,
+      disponivel: true,
+    };
 
-      setSuccess("Carro cadastrado com sucesso!");
+    try {
+      if (isEditing) {
+        await updateCar(id, carData);
+        setSuccess("Carro atualizado com sucesso!");
+      } else {
+        await createCar(carData);
+        setSuccess("Carro cadastrado com sucesso!");
+      }
 
       setTimeout(() => {
         navigate("/home");
       }, 1500);
     } catch (err) {
       console.error(err);
-      setError("Não foi possível cadastrar o carro.");
+      setError(
+        isEditing
+          ? "Não foi possível atualizar o carro."
+          : "Não foi possível cadastrar o carro."
+      );
     }
   }
 
@@ -69,31 +97,22 @@ export default function RegisterCarPage() {
     <div className="section-cars">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Cadastrar Carro</CardTitle>
+          <CardTitle>{isEditing ? "Editar Carro" : "Cadastrar Carro"}</CardTitle>
           <CardDescription>
-            Informe os dados do veículo
+            {isEditing
+              ? "Altere os dados do veículo abaixo"
+              : "Informe os dados do veículo"}
           </CardDescription>
         </CardHeader>
 
         <CardContent>
           <form
             id="register-car-form"
-            onSubmit={handleRegisterCar}
+            onSubmit={handleSubmit}
             className="flex flex-col gap-6"
           >
-            {error && (
-              <AlertError
-                title="Erro"
-                description={error}
-              />
-            )}
-
-            {success && (
-              <AlertSuccess
-                title="Sucesso!"
-                description={success}
-              />
-            )}
+            {error && <AlertError title="Erro" description={error} />}
+            {success && <AlertSuccess title="Sucesso!" description={success} />}
 
             <div className="grid gap-2">
               <Label htmlFor="placa">Placa</Label>
@@ -108,15 +127,10 @@ export default function RegisterCarPage() {
 
             <div className="grid gap-2">
               <Label>Marca</Label>
-
-              <Select
-                value={marca}
-                onValueChange={setMarca}
-              >
+              <Select value={marca} onValueChange={setMarca}>
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione a marca" />
                 </SelectTrigger>
-
                 <SelectContent>
                   <SelectItem value="FIAT">Fiat</SelectItem>
                   <SelectItem value="CHEVROLET">Chevrolet</SelectItem>
@@ -143,10 +157,7 @@ export default function RegisterCarPage() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="valorDiaria">
-                Valor da diária (R$)
-              </Label>
-
+              <Label htmlFor="valorDiaria">Valor da diária (R$)</Label>
               <Input
                 id="valorDiaria"
                 type="number"
@@ -159,7 +170,6 @@ export default function RegisterCarPage() {
 
             <div className="grid gap-2">
               <Label htmlFor="imagem">URL da imagem</Label>
-
               <Input
                 id="imagem"
                 placeholder="https://..."
@@ -176,7 +186,7 @@ export default function RegisterCarPage() {
             form="register-car-form"
             className="w-full"
           >
-            Cadastrar Carro
+            {isEditing ? "Salvar Alterações" : "Cadastrar Carro"}
           </Button>
         </CardFooter>
       </Card>
