@@ -87,7 +87,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: miguelaluguel-frontend
           IMAGE_TAG: ${{ github.sha }}
-          VITE_API_URL: http://13.59.73.95:8080/api
+          VITE_API_URL: __VITE_API_URL__
         run: |
           docker build \
             --build-arg VITE_API_URL=$VITE_API_URL \
