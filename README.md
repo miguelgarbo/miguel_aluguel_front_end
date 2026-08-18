@@ -1,16 +1,115 @@
-# React + Vite
+# 🚗 Miguel Alugueis Front-End
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Interface web do sistema **Miguel Alugueis**, desenvolvida com **React** e **Vite** para gerenciamento de aluguel de veículos.
 
-Currently, two official plugins are available:
+## 📋 Pré-requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Antes de iniciar o projeto, é necessário possuir instalado:
 
-## React Compiler
+- Node.js (versão 20 ou superior)
+- npm (instalado juntamente com o Node.js)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Verifique as versões:
 
-## Expanding the ESLint configuration
+```bash
+node -v
+npm -v
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## 🚀 Instalação
+
+Clone o repositório:
+
+```bash
+git clone https://github.com/miguelgarbo/auto_rent_front_end.git
+```
+
+Acesse a pasta do projeto:
+
+```bash
+cd auto_rent_front_end
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+---
+
+## ▶️ Executando o projeto
+
+Inicie o servidor de desenvolvimento:
+
+```bash
+npm run dev
+```
+
+Após iniciar, o Vite exibirá um endereço semelhante a:
+
+```
+http://localhost:5173
+```
+
+Abra essa URL no navegador.
+
+---
+
+## 📦 Scripts disponíveis
+
+### Executar em modo de desenvolvimento
+
+```bash
+npm run dev
+```
+
+### Gerar a versão de produção
+
+```bash
+npm run build
+```
+
+### Visualizar a versão de produção
+
+```bash
+npm run preview
+```
+
+### Executar o ESLint
+
+```bash
+npm run lint
+```
+
+---
+
+## 🛠️ Tecnologias
+
+- React
+- Vite
+- JavaScript
+- Tailwind CSS
+- shadcn/ui
+
+---
+
+## 📁 Estrutura do projeto
+
+```
+src/
+├── assets/
+├── components/
+├── pages/
+├── services/
+├── App.jsx
+└── main.jsx
+```
+
+---
+
+## 👨‍💻 Desenvolvedor
+
+Projeto desenvolvido para fins acadêmicos na disciplina de Desenvolvimento Web.

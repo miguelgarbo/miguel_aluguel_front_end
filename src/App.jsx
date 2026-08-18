@@ -1,12 +1,10 @@
+import { useState } from 'react'
 import './App.css'
-
-
+import AppRoutes from './routes/AppRoutes'
 function App() {
 
   return (
-    <>
-    <h1>VERSAO 01 SEM NADA</h1>
-    </>
+    <AppRoutes/>
   )
 }
 
