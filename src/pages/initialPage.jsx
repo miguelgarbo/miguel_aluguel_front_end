@@ -10,7 +10,7 @@ export default function InitialPage() {
       {/* Cabeçalho simples, só com a logo */}
       <header className="flex items-center gap-2 px-6 py-4">
         <Car className="w-6 h-6 text-primary" />
-        <span className="font-bold text-lg">Miguel Aluguel V.1</span>
+        <span className="font-bold text-lg">Miguel Aluguel V.2</span>
       </header>
 
       {/* Hero */}
