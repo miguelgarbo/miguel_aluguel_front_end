@@ -3,6 +3,7 @@ import CauroselCars from "../components/cars/caurosel_cars";
 import CarFilters from "../components/cars/cars_filters";
 import { getUserAuthenticated } from "@/services/authService";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 export default function HomePage() {
   const [search, setSearch] = useState("");
