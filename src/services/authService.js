@@ -1,5 +1,4 @@
 import axiosClient from "./http_client";
-import AuthDTO from "../DTOs/authDTO";
 const TOKEN_KEY = "token";
 
 export async function login(email, senha) {
@@ -15,7 +14,7 @@ export async function login(email, senha) {
   return token;
 }
 
-export async function registrar({nomeCompleto, email, senha}) {
+export async function registrar({ nomeCompleto, email, senha }) {
   const response = await axiosClient.post("/auth/registrar", { nomeCompleto, email, senha });
 
   return response.data;
@@ -31,6 +30,7 @@ export function getUserAuthenticated() {
     const payload = token.split(".")[1];
     return JSON.parse(atob(payload));
   } catch (e) {
+    console.log(e)
     return null;
   }
 }

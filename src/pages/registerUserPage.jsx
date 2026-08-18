@@ -14,7 +14,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertError, AlertSuccess } from "../components/alerts";
 
-import { createUser } from "../services/userService";
 import { registrar } from "../services/authService";
 
 
