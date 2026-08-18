@@ -21,7 +21,7 @@ import { getUserById, updateUser } from "../services/userService";
 import { getRentalsByUser } from "../services/rentalService";
 import { updateCar } from "../services/carsService";
 import { getUserAuthenticated } from "@/services/authService";
-import { AlertError } from "@/components/alerts";
+import { AlertError, AlertSuccess } from "@/components/alerts";
 
 
 
@@ -152,7 +152,7 @@ export default function ProfilePage() {
                 )}
 
                 {success && (
-                  <p className="text-sm text-green-600">{success}</p>
+                    <AlertSuccess title="Dados Salvos com Sucesso" description=":D !" />
                 )}
 
                 <div className="grid gap-2">
