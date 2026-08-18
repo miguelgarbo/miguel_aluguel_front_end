@@ -26,8 +26,7 @@ import { AlertError } from "@/components/alerts";
 
 
 export default function ProfilePage() {
-
-  const userLogged = getUserAuthenticated()
+  const [user, setUser] = useState(null);
 
 
   const [name, setName] = useState("");
@@ -39,10 +38,11 @@ export default function ProfilePage() {
 
 
 
-    useEffect(() => {
+  useEffect(() => {
     async function loadProfile() {
       try {
         const userLogged = await getUserAuthenticated();
+
 
         if (!userLogged) return;
 
@@ -67,9 +67,9 @@ export default function ProfilePage() {
     setError("");
     setSuccess("");
 
-    try {
-      
+    const userLogged = await getUserAuthenticated();
 
+    try {
       await updateUser(userLogged.id, {
         ...user,
         nomeCompleto: name,
@@ -78,6 +78,7 @@ export default function ProfilePage() {
 
       setSuccess("Dados atualizados com sucesso!");
     } catch (err) {
+      console.error(err);
       setError("Erro ao atualizar.");
     }
   }
